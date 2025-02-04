@@ -1,0 +1,7 @@
+build-esp-idf-5.3:
+  image: espressif/idf:release-v5.3
+  variables:
+    GIT_SUBMODULE_STRATEGY: recursive
+  stage: build
+  script:
+    - idf.py build
