@@ -14,6 +14,14 @@
 #define CL 35
 #define CC 32
 #define CR 33
-#define RR 19
+#define RR 21
+
+/* ULTRASONIC PINS */
+#define CENTER_TRIG 15
+#define CENTER_ECHO 2
+#define LEFT_TRIG 4
+#define LEFT_ECHO 5
+#define RIGHT_TRIG 18
+#define RIGHT_ECHO 19
 
 #endif
