@@ -146,7 +146,7 @@ void processGamepad(ControllerPtr ctl) {
     static bool prevAState = false;
 
     if (currentAState && !prevAState)
-        baseSpeed += 10;
+        is_maze_enabled = !is_maze_enabled;
 
     prevAState = currentAState;
 

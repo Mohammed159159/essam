@@ -32,26 +32,23 @@ void move(int speed, int diff, bool isFwd) {
     setLeftMotor(leftSpeed, isFwd);
 }
 
-
-
-void sharpleft(){
-    setRightMotor(120, true);
-    setLeftMotor(120, false);
-
+void left(int speed) {
+    setRightMotor(speed, true);
+    setLeftMotor(speed, false);
+    Console.println("LEFT");
 }
-void left(){
-    setRightMotor(170, true);
-    setLeftMotor(80, true);
+void forward(int speed) {
+    setRightMotor(speed, true);
+    setLeftMotor(speed, true);
+    Console.println("FORWARD");
 }
-void forward(){
-    setRightMotor(100, true);
-    setLeftMotor(100, true);
+void right(int speed) {
+    setRightMotor(speed, false);
+    setLeftMotor(speed, true);
+    Console.println("RIGHT");
 }
-void right(){
-    setRightMotor(80, true);
-    setLeftMotor(170, true);
-}
-void sharpright(){
-    setRightMotor(120, false);
-    setLeftMotor(120, true);
+void stop() {
+    setRightMotor(0, true);
+    setLeftMotor(0, true);
+    Console.println("STOP");
 }
