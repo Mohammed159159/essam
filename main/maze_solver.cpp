@@ -4,6 +4,14 @@ int maze_speed = 100;
 int maze_turnspeed = 70;
 bool is_maze_enabled = false;
 
+bool turning_right = false;
+unsigned long turning_right_duration = 150;
+unsigned long turning_right_start_time = 0;
+
+bool forward_priority = false;
+unsigned long forward_priority_duration = 1000;
+unsigned long forward_priority_start_time = 0;
+
 int us_sensor_readings[SONAR_NUM] = {0};
 
 void read_us_sensors() {
@@ -31,40 +39,50 @@ void debug_us_sensors() {
 
 void solve_maze() {
     read_us_sensors();
+
+    if (us_sensor_readings[0] >= 20 && !turning_right && !forward_priority) {
+        left(maze_turnspeed);
+        delay(300);
+        forward(maze_speed);
+        forward_priority = true;
+        forward_priority_start_time = millis();
+    }
+
     if (us_sensor_readings[1] > 20) {
         forward(maze_speed);
 
         if (us_sensor_readings[0] > 10 && us_sensor_readings[0] < 20) {
             forward(maze_speed);
         }
-        if (us_sensor_readings[0] >= 20) {
-            left(maze_turnspeed);
-            delay(30);
-            forward(maze_speed);
-        }
         if (us_sensor_readings[0] < 10 && us_sensor_readings[0] > 0) {
             right(maze_turnspeed);
-            delay(30);
-            forward(maze_speed);
+            delay(10);
         }
         if (us_sensor_readings[2] < 10 && us_sensor_readings[2] > 0) {
             left(maze_turnspeed);
-            delay(30);
-            forward(maze_speed);
+            delay(10);
         }
     }
 
     if (us_sensor_readings[1] <= 20 && us_sensor_readings[2] > 20) {
-        stop();
-        delay(1000);
         right(maze_turnspeed);
-        delay(400);
+        turning_right = true;
+        turning_right_start_time = millis();
     }
 
     if (us_sensor_readings[1] <= 20 && us_sensor_readings[2] < 20) {
-        stop();
-        delay(1000);
         right(maze_turnspeed);
-        delay(800);
+    }
+
+    if (turning_right_start_time > 0 && millis() - turning_right_start_time > turning_right_duration)
+    {
+        turning_right = false;
+        turning_right_start_time = 0;
+    }
+
+    if (forward_priority_start_time > 0 && millis() - forward_priority_start_time > forward_priority_duration)
+    {
+        forward_priority = false;
+        forward_priority_start_time = 0;
     }
 }

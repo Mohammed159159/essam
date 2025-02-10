@@ -13,6 +13,14 @@ extern int maze_turnspeed;
 extern bool is_maze_enabled;
 extern int us_sensor_readings[SONAR_NUM];
 
+extern bool turning_right;
+extern unsigned long turning_right_duration;
+extern unsigned long turning_right_start_time;
+
+extern bool forward_priority;
+extern unsigned long forward_priority_duration;
+extern unsigned long forward_priority_start_time;
+
 void read_us_sensors();
 
 extern NewPing sonar[SONAR_NUM];

@@ -11,10 +11,11 @@ extern int ir_sensor_readings[NUM_OF_SENSORS];
 extern bool is_line_follower_enabled;
 extern float error;
 extern float prevError;
-extern int kp;
-extern int kd;
+extern float kp;
+extern float kd;
 extern float sharpError;
-extern bool spinning_left;
+extern unsigned long spin_start_time;
+extern unsigned long spin_duration;
 
 extern int baseSpeed;
 
