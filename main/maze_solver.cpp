@@ -41,28 +41,30 @@ void solve_maze() {
             left(maze_turnspeed);
             delay(30);
             forward(maze_speed);
-            delay(30);
         }
         if (us_sensor_readings[0] < 10 && us_sensor_readings[0] > 0) {
             right(maze_turnspeed);
             delay(30);
             forward(maze_speed);
         }
-
         if (us_sensor_readings[2] < 10 && us_sensor_readings[2] > 0) {
             left(maze_turnspeed);
             delay(30);
             forward(maze_speed);
         }
     }
-    
+
     if (us_sensor_readings[1] <= 20 && us_sensor_readings[2] > 20) {
+        stop();
+        delay(1000);
         right(maze_turnspeed);
-        delay(300);
+        delay(400);
     }
 
     if (us_sensor_readings[1] <= 20 && us_sensor_readings[2] < 20) {
+        stop();
+        delay(1000);
         right(maze_turnspeed);
-        delay(300);
+        delay(800);
     }
 }
