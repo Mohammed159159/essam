@@ -27,14 +27,16 @@ void loop() {
     if (is_line_follower_enabled)
         follow_line();
 
+    // Console.println("DECISION:");
+    // solve_maze();
+    // Console.println("++++++++++++++++++++++++++++");
     // Console.println("SENSOR READINGS:");
     // debug_us_sensors();
     // Console.println("-----------------------------");
-    // solve_maze();
-    // Console.println("++++++++++++++++++++++++++++");
     
     if (is_maze_enabled)
         solve_maze();
 
-    // Console.printf("kp: %d | kd: %d | sharpError: %f\n | baseSpeed: %d", kp, kd, sharpError, baseSpeed);
+    debug_us_sensors();
+    Console.printf("kp_maze: %f, error_maze: %d\n", kp_maze, error_maze);
 }

@@ -4,6 +4,9 @@
 #include "pins.h"
 #include <Bluepad32.h>
 
+#define FORWARD true
+#define BACKWARD false
+
 extern int motorSpeed;
 extern int diff;
 extern bool isFwd;

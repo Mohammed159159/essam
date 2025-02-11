@@ -161,9 +161,9 @@ void processGamepad(ControllerPtr ctl) {
     int currentDpadState = ctl->dpad();
     static int prevDpadState = -1;
     if (currentDpadState == DPAD_UP && prevDpadState != DPAD_UP)
-        kp += 0.1;
+        kp_maze += 0.1;
     if (currentDpadState == DPAD_DOWN && prevDpadState != DPAD_DOWN)
-        kp -= 0.1;
+        kp_maze -= 0.1;
     if (currentDpadState == DPAD_RIGHT && prevDpadState != DPAD_RIGHT)
         kd += 0.11;
     if (currentDpadState == DPAD_LEFT && prevDpadState != DPAD_LEFT)
@@ -174,7 +174,7 @@ void processGamepad(ControllerPtr ctl) {
     static bool prevR1State = false;
 
     if (currentR1State && !prevR1State)
-        sharpError += 0.1;
+        sharp_error_maze += 0.1;
 
     prevR1State = currentR1State;
 
@@ -182,7 +182,7 @@ void processGamepad(ControllerPtr ctl) {
     static bool prevL1State = false;
 
     if (currentL1State && !prevL1State)
-        sharpError -= 0.1;
+        sharp_error_maze -= 0.1;
 
     prevL1State = currentL1State;
 
