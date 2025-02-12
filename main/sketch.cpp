@@ -21,6 +21,8 @@ void setup() {
     connectController();
 }
 
+unsigned long console_start_time = 0;
+
 void loop() {
     operateController();
 
@@ -33,10 +35,14 @@ void loop() {
     // Console.println("SENSOR READINGS:");
     // debug_us_sensors();
     // Console.println("-----------------------------");
-    
+
     if (is_maze_enabled)
         solve_maze();
 
-    debug_us_sensors();
-    Console.printf("kp_maze: %f, error_maze: %d\n", kp_maze, error_maze);
+    if (millis() - console_start_time > 500) {
+        debug_us_sensors();
+        Console.printf("kp_maze: %f, error_maze: %d\n", kp_maze, error_maze);
+        console_start_time = millis();
+    }
+    vTaskDelay(1);
 }

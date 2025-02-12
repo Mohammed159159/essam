@@ -12,6 +12,8 @@
 
 extern ControllerPtr myControllers[BP32_MAX_GAMEPADS];
 
+void print(String str);
+
 void connectController();
 
 void operateController();

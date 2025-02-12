@@ -2,6 +2,15 @@
 
 ControllerPtr myControllers[BP32_MAX_GAMEPADS];
 
+void print(String str) {
+    static unsigned long print_start_time = 0;
+    if (millis() - print_start_time > 500)
+    {
+        Console.println(str.c_str());
+        print_start_time = millis();
+    }
+}
+
 void connectController() {
     Console.printf("Firmware: %s\n", BP32.firmwareVersion());
     const uint8_t* addr = BP32.localBdAddress();
@@ -174,7 +183,7 @@ void processGamepad(ControllerPtr ctl) {
     static bool prevR1State = false;
 
     if (currentR1State && !prevR1State)
-        sharp_error_maze += 0.1;
+        sharpError += 0.1;
 
     prevR1State = currentR1State;
 
@@ -182,7 +191,7 @@ void processGamepad(ControllerPtr ctl) {
     static bool prevL1State = false;
 
     if (currentL1State && !prevL1State)
-        sharp_error_maze -= 0.1;
+        sharpError -= 0.1;
 
     prevL1State = currentL1State;
 
