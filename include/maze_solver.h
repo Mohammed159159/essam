@@ -31,6 +31,8 @@ extern unsigned long ping_duration;
 
 extern float kp_maze;
 extern int error_maze;
+extern int prev_error_maze;
+extern float kd_maze;
 extern int offset;
 
 void read_us_sensors();

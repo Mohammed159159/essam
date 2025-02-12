@@ -174,9 +174,9 @@ void processGamepad(ControllerPtr ctl) {
     if (currentDpadState == DPAD_DOWN && prevDpadState != DPAD_DOWN)
         kp_maze -= 0.1;
     if (currentDpadState == DPAD_RIGHT && prevDpadState != DPAD_RIGHT)
-        kd += 0.11;
+        kd_maze += 0.1;
     if (currentDpadState == DPAD_LEFT && prevDpadState != DPAD_LEFT)
-        kd -= 0.1;
+        kd_maze -= 0.1;
     prevDpadState = currentDpadState;
 
     bool currentR1State = ctl->r1();

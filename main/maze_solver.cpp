@@ -18,6 +18,9 @@ unsigned long ping_duration = 30;
 float kp_maze = 0.6;
 int error_maze = 0;
 int offset = 0;
+
+float kd_maze = 0.1;
+int prev_error_maze = error_maze;
 int us_sensor_readings[SONAR_NUM];
 
 NewPing sonar[SONAR_NUM] = {                      // Sensor object array.
@@ -31,7 +34,6 @@ void read_us_sensors() {
         us_sensor_readings[i] = sonar[i].ping_cm();
         ping_start_time = millis();
         i++;
-
 
         if (i == SONAR_NUM)
             i = 0;
@@ -51,56 +53,31 @@ void debug_us_sensors() {
 void solve_maze() {
     read_us_sensors();
 
-    if (us_sensor_readings[0] >= MAZE_WIDTH * 1.5 && !turning_right) {
-        print("TURNING LEFT....");
-        turning_start_time = millis();
-        turning_left = true;
-        move(maze_speed, -maze_speed * kp_maze * 1.2, FORWARD);
-    } else if (us_sensor_readings[1] >= MAZE_WIDTH && (!turning_right && !turning_left)) {
+    if (us_sensor_readings[1] >= MAZE_WIDTH / 3 && (!turning_right && !turning_left)) {
         print("PID....");
+
+        // if (us_sensor_readings[0] > MAZE_WIDTH / 3 && us_sensor_readings[2] > MAZE_WIDTH / 3) {
         error_maze = us_sensor_readings[2] - us_sensor_readings[0] - offset;
 
         error_maze = constrain(error_maze, -MAZE_WIDTH, MAZE_WIDTH);
 
-        if (abs(error_maze) > MAZE_WIDTH) {
+        if (abs(error_maze) > 1) {
         } else {
             error_maze = 0;
         }
 
-        setRightMotor(constrain(maze_speed - kp_maze * error_maze, 0, 255), FORWARD);
-        setLeftMotor(constrain(maze_speed + kp_maze * error_maze, 0, 255), FORWARD);
+        prev_error_maze = error_maze;
 
-    } else if (us_sensor_readings[2] >= MAZE_WIDTH * 1.5 && !turning_left) {
-        print("TURNING RIGHT....");
-        turning_start_time = millis();
-        turning_right = true;
-        move(maze_speed, maze_speed * kp_maze * 1.2, FORWARD);
-    }
-    // else {
-    //     stop();
-    // }
+        // }else {
+        //     if (us_sensor_readings[0] < MAZE_WIDTH / 3)
+        //         error_maze = MAZE_WIDTH / 3;
+        //     else if (us_sensor_readings[2] < MAZE_WIDTH / 3)
+        //         error_maze = -MAZE_WIDTH / 3;
+        // }
 
-    // if (us_sensor_readings[0] < MAZE_WIDTH && us_sensor_readings[1] < MAZE_WIDTH / 2 &&
-    //     us_sensor_readings[2] < MAZE_WIDTH) {
-    //     right(maze_speed);
-    // }
-
-    if (us_sensor_readings[0] < MAZE_WIDTH)
-        turning_left = false;
-    if (us_sensor_readings[2] < MAZE_WIDTH)
-        turning_right = false;
-
-    if (turning_start_time > 0 && millis() - turning_start_time > turning_duration) {
-        print("TURNING_TIMER_EXPIRED!");
-        turning_timer_expired = true;
-        turning_start_time = 0;
-        turning_timer_cooldown_start_time = millis();
-    }
-    if (turning_timer_cooldown_start_time > 0 &&
-        millis() - turning_timer_cooldown_start_time > turning_timer_cooldown_duration) {
-        print("TURNING_TIMER_COOLED_DOWN!");
-
-        turning_timer_expired = false;
-        turning_timer_cooldown_start_time = 0;
+        setRightMotor(constrain(maze_speed - kp_maze * error_maze - kd_maze * (error - prev_error_maze), 0, 255),
+                      FORWARD);
+        setLeftMotor(constrain(maze_speed + kp_maze * error_maze + kd_maze * (error_maze - prev_error_maze), 0, 255),
+                     FORWARD);
     }
 }
