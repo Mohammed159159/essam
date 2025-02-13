@@ -24,6 +24,7 @@ void setLeftMotor(unsigned int speed, bool isFwd);
 void move(int speed, int diff, bool isFwd);
 
 void forward(int speed);
+void backward(int speed);
 void right(int speed);
 void left(int speed);
 void stop();

@@ -3,24 +3,27 @@ int maze_speed = 100;
 int maze_turnspeed = 70;
 bool is_maze_enabled = false;
 
-unsigned long turning_duration = 3000;
+unsigned long turning_duration = 100;
 unsigned long turning_start_time = 0;
 bool turning_timer_expired = false;
 
 bool turning_left = false;
+bool prev_turning_left = turning_left;
 bool turning_right = false;
+bool prev_turning_right = turning_right;
 
 unsigned long turning_timer_cooldown_duration = 500;
 unsigned long turning_timer_cooldown_start_time = 0;
 
 unsigned long ping_duration = 30;
 
-float kp_maze = 0.6;
+float kp_maze = 0.4;
 int error_maze = 0;
 int offset = 0;
 
-float kd_maze = 0.1;
+float kd_maze = 0.0;
 int prev_error_maze = error_maze;
+
 int us_sensor_readings[SONAR_NUM];
 
 NewPing sonar[SONAR_NUM] = {                      // Sensor object array.
@@ -34,6 +37,9 @@ void read_us_sensors() {
         us_sensor_readings[i] = sonar[i].ping_cm();
         ping_start_time = millis();
         i++;
+
+        if (us_sensor_readings[i] <= 0)
+            us_sensor_readings[i] = 1;
 
         if (i == SONAR_NUM)
             i = 0;
@@ -51,33 +57,66 @@ void debug_us_sensors() {
 }
 
 void solve_maze() {
-    read_us_sensors();
+    // read_us_sensors();
+    debug_us_sensors();
 
-    if (us_sensor_readings[1] >= MAZE_WIDTH / 3 && (!turning_right && !turning_left)) {
-        print("PID....");
-
-        // if (us_sensor_readings[0] > MAZE_WIDTH / 3 && us_sensor_readings[2] > MAZE_WIDTH / 3) {
-        error_maze = us_sensor_readings[2] - us_sensor_readings[0] - offset;
-
-        error_maze = constrain(error_maze, -MAZE_WIDTH, MAZE_WIDTH);
-
-        if (abs(error_maze) > 1) {
-        } else {
-            error_maze = 0;
+    if (us_sensor_readings[1] < 10) {
+        stop();
+        delay(30);
+        backward(maze_speed);
+        delay(60);
+    } else {
+        if (us_sensor_readings[0] >= 20 && !turning_right && !turning_timer_expired) {
+            turning_left = true;
+            left(maze_turnspeed);
+            delay(30);
+            forward(maze_speed);
+            delay(10);
+        } else if (us_sensor_readings[1] >= 20)
+            forward(maze_speed);
+        else if (us_sensor_readings[2] >= 20 && !turning_left && !turning_timer_expired) {
+            turning_right = true;
+            right(maze_turnspeed);
+            delay(30);
+            forward(maze_speed);
+            delay(10);
+        } else if (us_sensor_readings[2] > 5) {
+            right(maze_speed);
+            delay(200);
+        } else if (us_sensor_readings[0] > 5) {
+            left(maze_speed);
+            delay(200);
         }
 
-        prev_error_maze = error_maze;
+        if (us_sensor_readings[0] < 8) {
+            right(maze_turnspeed);
+            delay(10);
+        }
+        if (us_sensor_readings[2] < 8) {
+            left(maze_turnspeed);
+            delay(10);
+        }
+    }
 
-        // }else {
-        //     if (us_sensor_readings[0] < MAZE_WIDTH / 3)
-        //         error_maze = MAZE_WIDTH / 3;
-        //     else if (us_sensor_readings[2] < MAZE_WIDTH / 3)
-        //         error_maze = -MAZE_WIDTH / 3;
-        // }
+    if (us_sensor_readings[0] < 20)
+        turning_left = false;
+    if (us_sensor_readings[2] < 20)
+        turning_right = false;
 
-        setRightMotor(constrain(maze_speed - kp_maze * error_maze - kd_maze * (error - prev_error_maze), 0, 255),
-                      FORWARD);
-        setLeftMotor(constrain(maze_speed + kp_maze * error_maze + kd_maze * (error_maze - prev_error_maze), 0, 255),
-                     FORWARD);
+    if (prev_turning_left == false && turning_left) {
+        turning_start_time = millis();
+    }
+    if (prev_turning_right == false && turning_right) {
+        turning_start_time = millis();
+    }
+    if (turning_start_time > 0 && millis() - turning_start_time > turning_duration) {
+        turning_timer_expired = true;
+        turning_start_time = 0;
+        turning_timer_cooldown_start_time = millis();
+    }
+    if (turning_timer_cooldown_start_time > 0 &&
+        millis() - turning_timer_cooldown_start_time > turning_timer_cooldown_duration) {
+        turning_timer_expired = false;
+        turning_timer_cooldown_start_time = 0;
     }
 }

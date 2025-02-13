@@ -42,6 +42,13 @@ void forward(int speed) {
     setLeftMotor(speed, true);
     Console.println("FORWARD");
 }
+
+void backward(int speed) {
+    setRightMotor(speed, false);
+    setLeftMotor(speed, false);
+    Console.println("BACKWARD");
+}
+
 void right(int speed) {
     setRightMotor(speed, false);
     setLeftMotor(speed, true);

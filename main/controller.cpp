@@ -46,7 +46,7 @@ void connectController() {
     BP32.enableBLEService(false);
 }
 
-void operateController() {
+void control_robot() {
     // This call fetches all the controllers' data.
     // Call this function in your main loop.
     bool dataUpdated = BP32.update();

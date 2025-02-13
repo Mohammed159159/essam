@@ -16,7 +16,7 @@ void print(String str);
 
 void connectController();
 
-void operateController();
+void control_robot();
 
 void onConnectedController(ControllerPtr ctl);
 
