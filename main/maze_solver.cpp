@@ -87,6 +87,22 @@ void solve_maze() {
             left(maze_speed);
             delay(200);
         }
+        if (us_sensor_readings[0] >= 20) {
+            left(maze_turnspeed);
+            delay(30);
+            forward(maze_speed);
+        }
+        if (us_sensor_readings[0] < 10 && us_sensor_readings[0] > 0) {
+            right(maze_turnspeed);
+            delay(30);
+            forward(maze_speed);
+        }
+        if (us_sensor_readings[2] < 10 && us_sensor_readings[2] > 0) {
+            left(maze_turnspeed);
+            delay(30);
+            forward(maze_speed);
+        }
+    }
 
         if (us_sensor_readings[0] < 8) {
             right(maze_turnspeed);
@@ -96,7 +112,6 @@ void solve_maze() {
             left(maze_turnspeed);
             delay(10);
         }
-    }
 
     if (us_sensor_readings[0] < 20)
         turning_left = false;
