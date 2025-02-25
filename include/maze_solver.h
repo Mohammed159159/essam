@@ -6,8 +6,8 @@
 #include "motors.h"
 #include "controller.h"
 
-#define SONAR_NUM 3       // Number of sensors.
-#define MAX_DISTANCE 200  // Maximum distance (in cm) to ping.
+#define SONAR_NUM 5       // Number of sensors.
+#define MAX_DISTANCE 300  // Maximum distance (in cm) to ping.
 
 #define MAZE_WIDTH 35
 #define CAR_WIDTH 16
@@ -21,8 +21,10 @@ extern bool turning_right;
 extern bool prev_turning_right;
 extern bool turning_left;
 extern bool prev_turning_left;
+extern bool about_to_crash;
 
-extern unsigned long turning_start_time;
+extern unsigned long turning_left_start_time;
+extern unsigned long turning_right_start_time;
 extern unsigned long turning_duration;
 extern bool turning_timer_expired;
 
@@ -36,6 +38,7 @@ extern int error_maze;
 extern int prev_error_maze;
 extern float kd_maze;
 extern int offset;
+
 
 void read_us_sensors();
 

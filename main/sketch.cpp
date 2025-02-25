@@ -27,9 +27,8 @@ void loop() {
     if (is_line_follower_enabled)
         follow_line();
 
-
     if (is_maze_enabled)
         solve_maze();
-
+        
     vTaskDelay(1);
 }

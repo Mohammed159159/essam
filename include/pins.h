@@ -11,9 +11,9 @@
 
 /* IR PINS */
 #define LL 34
-#define CL 35
-#define CC 32
-#define CR 33
+#define CL 39
+#define CC 36
+#define CR 35
 #define RR 21
 
 /* ULTRASONIC PINS */
@@ -23,5 +23,9 @@
 #define LEFT_ECHO 5
 #define RIGHT_TRIG 18
 #define RIGHT_ECHO 19
+#define CENTER_LEFT_TRIG 17
+#define CENTER_LEFT_ECHO 16
+#define CENTER_RIGHT_TRIG 32
+#define CENTER_RIGHT_ECHO 33
 
 #endif
