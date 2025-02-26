@@ -77,18 +77,14 @@ void solve_maze() {
         right(maze_turnspeed);
         // delay(30);
     }
-    if (us_sensor_readings[0] < 8) {
-        right(maze_turnspeed);
-        // delay(10);
-    }
-    if (us_sensor_readings[4] < 8) {
-        left(maze_turnspeed);
-        // delay(10);
-    }
     if (us_sensor_readings[1] <= 15 && !turning_left) {
         turning_right = true;
         about_to_crash = true;
         turning_right_start_time = millis();
+        right(maze_turnspeed);
+        // delay(10);
+    }
+    else if (us_sensor_readings[0] < 8) {
         right(maze_turnspeed);
         // delay(10);
     }
@@ -99,7 +95,11 @@ void solve_maze() {
         left(maze_turnspeed);
         // delay(10);
     }
-
+    else if (us_sensor_readings[4] < 8) {
+        left(maze_turnspeed);
+        // delay(10);
+    }
+    
     if (turning_left_start_time > 0 && millis() - turning_left_start_time > turning_duration) {
         turning_left = false;
     }

@@ -7,9 +7,9 @@ float prevError = 0;
 float kp = 37.7;
 float kd = 0;
 float sharpError = 2.1;
-int baseSpeed = 100;
+int baseSpeed = 80;
 unsigned long spin_start_time = 0;
-unsigned long spin_duration = 50;
+unsigned long spin_duration = 100;
 
 void read_ir_sensors() {
     ir_sensor_readings[0] = !digitalRead(ir_sensor_pins[0]);

@@ -10,9 +10,9 @@
 #define ENB 14
 
 /* IR PINS */
-#define LL 34
-#define CL 39
-#define CC 36
+#define LL 36
+#define CL 39 
+#define CC 34
 #define CR 35
 #define RR 21
 
